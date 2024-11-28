@@ -1,6 +1,6 @@
 import { type RuleSetRule } from 'webpack';
-import { createSassLoader } from './loaders/createSassLoader';
 import { createBabelLoader } from './loaders/babelLoader';
+import { createSassLoader } from './loaders/createSassLoader';
 import { Options } from './types/types';
 
 export function createLoaders(options: Options): RuleSetRule[] {
@@ -40,6 +40,18 @@ export function createLoaders(options: Options): RuleSetRule[] {
 	};
 
 	const sassLoader = createSassLoader(isDev);
+	// const typeScriptLoader = {
+	// 	test: /\.tsx?$/,
+	// 	use: 'ts-loader',
+	// 	exclude: /node_modules/,
+	// };
 
-	return [fileLoader, svgLoader, codeBabelLoader, tsxBabelLoader, sassLoader];
+	return [
+		fileLoader,
+		svgLoader,
+		codeBabelLoader,
+		tsxBabelLoader,
+		// typeScriptLoader,
+		sassLoader,
+	];
 }
