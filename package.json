@@ -3,11 +3,10 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-        "build": "webpack",
         "start": "webpack serve --env port=3000",
         "start:vite": "vite",
-        "build:prod": "webpack --env mode=production",
         "build:dev": "webpack  --env mode=development",
+        "build:prod": "webpack --env mode=production",
         "lint:ts": "eslint \"./src/**/*.{ts,tsx}\"",
         "lint:ts:fix": "eslint \"./src/**/*.{ts,tsx}\" --fix",
         "lint:scss": "npx stylelint \"**/*.scss\"",
