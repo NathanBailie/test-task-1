@@ -40,18 +40,6 @@ export function createLoaders(options: Options): RuleSetRule[] {
 	};
 
 	const sassLoader = createSassLoader(isDev);
-	// const typeScriptLoader = {
-	// 	test: /\.tsx?$/,
-	// 	use: 'ts-loader',
-	// 	exclude: /node_modules/,
-	// };
 
-	return [
-		fileLoader,
-		svgLoader,
-		codeBabelLoader,
-		tsxBabelLoader,
-		// typeScriptLoader,
-		sassLoader,
-	];
+	return [fileLoader, svgLoader, codeBabelLoader, tsxBabelLoader, sassLoader];
 }
