@@ -28,7 +28,7 @@ module.exports = {
         'react/react-in-jsx-scope': 'off',
         'react/require-default-props': 'off',
         'react-hooks/rules-of-hooks': 'error',
-        'react-hooks/exhaustive-deps': 'error',
+        'react-hooks/exhaustive-deps': 'warn',
         'react/jsx-filename-extension': [
             2,
             {
@@ -77,6 +77,7 @@ module.exports = {
                 ],
             },
         ],
+        'react/jsx-no-constructed-context-values': 'warn',
     },
     globals: {
         __IS_DEV__: true,

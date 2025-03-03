@@ -1,4 +1,5 @@
 import cls from './TableItem.module.scss';
+import { Link } from 'react-router-dom';
 import { classNames } from '@/shared/lib/classNames/classNames';
 import { NormalizedTest } from '@/shared/types/types';
 
@@ -19,6 +20,14 @@ export const TableItem = (props: NormalizedTest) => {
                 {status}
             </span>
             <span className={cls.site}>{site}</span>
+            <Link
+                to={`/${linkTextInLowerCase}/${id}`}
+                className={classNames(cls.action, {}, [
+                    cls[linkTextInLowerCase],
+                ])}
+            >
+                {linkTextInLowerCase}
+            </Link>
         </div>
     );
 };

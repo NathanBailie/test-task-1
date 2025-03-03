@@ -2,15 +2,13 @@ import { normalizeTests } from '../model/lib/normalizeTests';
 import { fetchSites } from '../model/services/FetchSites';
 import { fetchTests } from '../model/services/FetchTests';
 import {
-    ReactNode,
     createContext,
     useContext,
-    useEffect,
-    useMemo,
+    ReactNode,
     useState,
-    useCallback, // добавляем useCallback
+    useEffect,
+    useCallback,
 } from 'react';
-
 import {
     NormalizedSites,
     NormalizedTest,
@@ -67,6 +65,7 @@ export const DataProvider = ({ children }: DataProviderProps) => {
     const [statusSortOrder, setStatusSortOrder] = useState<SortOrder>('ASC');
     const [siteSortOrder, setSiteSortOrder] = useState<SortOrder>('ASC');
 
+    // Memoize sort handlers to avoid re-creation on each render
     const nameSortOrderHandler = useCallback(() => {
         setNameSortOrder(prevOrder => (prevOrder === 'ASC' ? 'DESC' : 'ASC'));
 
@@ -142,49 +141,40 @@ export const DataProvider = ({ children }: DataProviderProps) => {
         Promise.all([fetchSites(), fetchTests()])
             .then(([sitesData, testsData]) => {
                 setSites(sitesData);
-                setTests(normalizeTests(testsData, sitesData));
-                setFilteredTests(tests);
+                const normalizedTests = normalizeTests(testsData, sitesData);
+                setTests(normalizedTests);
+                setFilteredTests(normalizedTests);
             })
             .catch(() => setError(true))
             .finally(() => setLoading(false));
-    }, [tests]);
+    }, []);
 
-    const value = useMemo(
-        () => ({
-            tests,
-            filteredTests,
-            sites,
-            loading,
-            error,
-            searchQuery,
-            setSearchQuery,
-            nameSortOrder,
-            typeSortOrder,
-            statusSortOrder,
-            siteSortOrder,
-            nameSortOrderHandler,
-            typeSortOrderHandler,
-            statusSortOrderHandler,
-            siteSortOrderHandler,
-        }),
-        [
-            tests,
-            filteredTests,
-            sites,
-            loading,
-            error,
-            searchQuery,
-            setSearchQuery,
-            nameSortOrder,
-            typeSortOrder,
-            statusSortOrder,
-            siteSortOrder,
-            nameSortOrderHandler,
-            typeSortOrderHandler,
-            statusSortOrderHandler,
-            siteSortOrderHandler,
-        ],
-    );
+    useEffect(() => {
+        if (tests) {
+            setFilteredTests(
+                tests.filter(test =>
+                    test.name.toLowerCase().includes(searchQuery.toLowerCase()),
+                ),
+            );
+        }
+    }, [searchQuery, tests]);
+
+    const value = {
+        filteredTests,
+        sites,
+        loading,
+        error,
+        searchQuery,
+        setSearchQuery,
+        nameSortOrder,
+        typeSortOrder,
+        siteSortOrder,
+        statusSortOrder,
+        nameSortOrderHandler,
+        typeSortOrderHandler,
+        statusSortOrderHandler,
+        siteSortOrderHandler,
+    };
 
     return (
         <DataContext.Provider value={value}>{children}</DataContext.Provider>

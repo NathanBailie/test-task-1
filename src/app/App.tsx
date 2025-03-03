@@ -1,14 +1,10 @@
+import AppRouter from './providers/router/ui/AppRouter';
 import { memo } from 'react';
-import { Table } from '@/features/Table';
 
-const App = memo(() => {
-    let a;
-
-    return (
-        <div className="app">
-            <Table />
-        </div>
-    );
-});
+const App = memo(() => (
+    <div className="app">
+        <AppRouter />
+    </div>
+));
 
 export default App;
