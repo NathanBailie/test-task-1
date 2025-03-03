@@ -48,6 +48,9 @@ export const Table = () => {
         return (
             <div className={cls.wrongResult}>
                 <h2>Your search did not match any results.</h2>
+                <button type="button" onClick={() => setSearchQuery('')}>
+                    Reset
+                </button>
             </div>
         );
     }
@@ -91,7 +94,7 @@ export const Table = () => {
     return (
         <div className={cls.table}>
             <div className={cls.table_header}>{tableHeader}</div>
-            <div className={cls.Table_items}>{listItems}</div>
+            <div className={cls.table_items}>{listItems}</div>
         </div>
     );
 };

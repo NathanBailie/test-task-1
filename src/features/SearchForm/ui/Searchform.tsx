@@ -1,16 +1,18 @@
 import cls from './SearchForm.module.scss';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import searchImg from '@/shared/assets/icons/search.svg';
 import { useData } from '@/app/providers/DataProvider';
 import { useDebounce } from '@/shared/lib/hooks/useDebounce';
 
 export const SearchForm = () => {
-    const { filteredTests } = useData();
-
-    const { searchQuery, setSearchQuery } = useData();
+    const { filteredTests, searchQuery, setSearchQuery } = useData();
     const [localQuery, setLocalQuery] = useState(searchQuery);
 
     const debouncedSetSearchQuery = useDebounce(setSearchQuery, 300);
+
+    useEffect(() => {
+        setLocalQuery(searchQuery);
+    }, [searchQuery]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLocalQuery(e.target.value);
@@ -18,11 +20,8 @@ export const SearchForm = () => {
     };
 
     const testAmount = () => {
-        const amount = filteredTests?.length;
-        if (!amount) return `0 tests`;
-        if (amount === 1) return `1 test`;
-        if (amount > 1) return `${amount} tests`;
-        return `0 tests`;
+        const amount = filteredTests?.length || 0;
+        return `${amount} test${amount !== 1 ? 's' : ''}`;
     };
 
     return (
