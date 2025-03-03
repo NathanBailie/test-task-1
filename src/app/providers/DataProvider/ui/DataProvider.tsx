@@ -1,3 +1,6 @@
+import { normalizeTests } from '../model/lib/normalizeTests';
+import { fetchSites } from '../model/services/FetchSites';
+import { fetchTests } from '../model/services/FetchTests';
 import {
     ReactNode,
     createContext,
@@ -5,13 +8,14 @@ import {
     useEffect,
     useMemo,
     useState,
+    useCallback, // добавляем useCallback
 } from 'react';
 
-import { normalizeTests } from '../model/lib/normalizeTests';
-import { fetchSites } from '../model/services/FetchSites';
-import { fetchTests } from '../model/services/FetchTests';
-
-import { NormalizedSites, NormalizedTest } from '@/shared/types/types';
+import {
+    NormalizedSites,
+    NormalizedTest,
+    SortOrder,
+} from '@/shared/types/types';
 
 interface DataContextType {
     tests?: NormalizedTest[];
@@ -19,6 +23,18 @@ interface DataContextType {
     sites?: NormalizedSites;
     loading: boolean;
     error: boolean;
+    searchQuery: string;
+    setSearchQuery: (query: string) => void;
+
+    nameSortOrder: SortOrder;
+    typeSortOrder: SortOrder;
+    statusSortOrder: SortOrder;
+    siteSortOrder: SortOrder;
+
+    nameSortOrderHandler: () => void;
+    typeSortOrderHandler: () => void;
+    statusSortOrderHandler: () => void;
+    siteSortOrderHandler: () => void;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -44,6 +60,81 @@ export const DataProvider = ({ children }: DataProviderProps) => {
     const [filteredTests, setFilteredTests] = useState<
         NormalizedTest[] | undefined
     >(undefined);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const [nameSortOrder, setNameSortOrder] = useState<SortOrder>('ASC');
+    const [typeSortOrder, setTypeSortOrder] = useState<SortOrder>('ASC');
+    const [statusSortOrder, setStatusSortOrder] = useState<SortOrder>('ASC');
+    const [siteSortOrder, setSiteSortOrder] = useState<SortOrder>('ASC');
+
+    const nameSortOrderHandler = useCallback(() => {
+        setNameSortOrder(prevOrder => (prevOrder === 'ASC' ? 'DESC' : 'ASC'));
+
+        setFilteredTests(prev =>
+            prev
+                ? [...prev].sort((a, b) =>
+                      nameSortOrder === 'ASC'
+                          ? a.name.localeCompare(b.name)
+                          : b.name.localeCompare(a.name),
+                  )
+                : prev,
+        );
+    }, [nameSortOrder]);
+
+    const typeSortOrderHandler = useCallback(() => {
+        setTypeSortOrder(prevOrder => (prevOrder === 'ASC' ? 'DESC' : 'ASC'));
+
+        setFilteredTests(prev =>
+            prev
+                ? [...prev].sort((a, b) =>
+                      typeSortOrder === 'ASC'
+                          ? a.type.localeCompare(b.type)
+                          : b.type.localeCompare(a.type),
+                  )
+                : prev,
+        );
+    }, [typeSortOrder]);
+
+    const statusSortOrderHandler = useCallback(() => {
+        setStatusSortOrder(prevOrder => (prevOrder === 'ASC' ? 'DESC' : 'ASC'));
+
+        setFilteredTests(prev =>
+            prev
+                ? [...prev].sort((a, b) => {
+                      const ASC = {
+                          Online: 0,
+                          Paused: 1,
+                          Stopped: 2,
+                          Draft: 3,
+                      };
+                      const DESC = {
+                          Draft: 0,
+                          Stopped: 1,
+                          Paused: 2,
+                          Online: 3,
+                      };
+
+                      return statusSortOrder === 'ASC'
+                          ? ASC[a.status] - ASC[b.status]
+                          : DESC[a.status] - DESC[b.status];
+                  })
+                : prev,
+        );
+    }, [statusSortOrder]);
+
+    const siteSortOrderHandler = useCallback(() => {
+        setSiteSortOrder(prevOrder => (prevOrder === 'ASC' ? 'DESC' : 'ASC'));
+
+        setFilteredTests(prev =>
+            prev
+                ? [...prev].sort((a, b) =>
+                      siteSortOrder === 'ASC'
+                          ? a.site.localeCompare(b.site)
+                          : b.site.localeCompare(a.site),
+                  )
+                : prev,
+        );
+    }, [siteSortOrder]);
 
     useEffect(() => {
         setLoading(true);
@@ -59,8 +150,40 @@ export const DataProvider = ({ children }: DataProviderProps) => {
     }, [tests]);
 
     const value = useMemo(
-        () => ({ tests, filteredTests, sites, loading, error }),
-        [tests, filteredTests, sites, loading, error],
+        () => ({
+            tests,
+            filteredTests,
+            sites,
+            loading,
+            error,
+            searchQuery,
+            setSearchQuery,
+            nameSortOrder,
+            typeSortOrder,
+            statusSortOrder,
+            siteSortOrder,
+            nameSortOrderHandler,
+            typeSortOrderHandler,
+            statusSortOrderHandler,
+            siteSortOrderHandler,
+        }),
+        [
+            tests,
+            filteredTests,
+            sites,
+            loading,
+            error,
+            searchQuery,
+            setSearchQuery,
+            nameSortOrder,
+            typeSortOrder,
+            statusSortOrder,
+            siteSortOrder,
+            nameSortOrderHandler,
+            typeSortOrderHandler,
+            statusSortOrderHandler,
+            siteSortOrderHandler,
+        ],
     );
 
     return (

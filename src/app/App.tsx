@@ -1,5 +1,14 @@
 import { memo } from 'react';
+import { Table } from '@/features/Table';
 
-const App = memo(() => <h1>Launched!</h1>);
+const App = memo(() => {
+    let a;
+
+    return (
+        <div className="app">
+            <Table />
+        </div>
+    );
+});
 
 export default App;
