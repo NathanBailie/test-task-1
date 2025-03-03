@@ -1,0 +1,23 @@
+:root {
+	/* sizes */
+	--app-width: 955px;
+
+	/* fonts */
+	--first-family: "Roboto", sans-serif;
+	--second-family: "Montserrat", sans-serif;
+	--third-family: "Nunito", sans-serif;
+
+	/* colors */
+	--app-bg: #fafafa;
+	--table-item-bg: #fff;
+	--table-th-color: #999;
+	--status-paused: #ff8346;
+	--status-stopped: #fe4848;
+	--status-online: #1bda9d;
+	--status-draft: #5c5c5c;
+	--color-bar-market: #e14165;
+	--color-bar-delivery: #c2c2ff;
+	--color-bar-games: #8686ff;
+	--button-results: #2ee5ac;
+	--button-finalize: #7d7d7d;
+}
