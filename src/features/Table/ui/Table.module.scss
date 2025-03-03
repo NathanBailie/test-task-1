@@ -83,6 +83,21 @@
 				margin-left: 7px;
 			}
 		}
+
+		@media (width <=900px) {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+			gap: 15px;
+		}
+	}
+
+	&_items {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
 	}
 }
 

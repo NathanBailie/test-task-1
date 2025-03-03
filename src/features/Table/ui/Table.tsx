@@ -2,6 +2,7 @@ import cls from './Table.module.scss';
 import arrowDown from '@/shared/assets/icons/arrow-down.svg';
 import arrowUp from '@/shared/assets/icons/arrow-up.svg';
 import { useData } from '@/app/providers/DataProvider';
+import { TableItem } from '@/entities/TableItem';
 
 function createColumn(
     name: string,
@@ -51,6 +52,23 @@ export const Table = () => {
         );
     }
 
+    const listItems = filteredTests.map(item => {
+        const { id, name, type, status, site, linkText, subdomain } = item;
+
+        return (
+            <TableItem
+                key={id}
+                id={id}
+                name={name}
+                type={type}
+                status={status}
+                site={site}
+                linkText={linkText}
+                subdomain={subdomain}
+            />
+        );
+    });
+
     const tableHeader = tableHead.map(
         ({ name, content, sortOrder, orderHandler }, index) => (
             <button
@@ -74,6 +92,7 @@ export const Table = () => {
         <div className={cls.table}>
             <h2>Dashboard</h2>
             <div className={cls.table_header}>{tableHeader}</div>
+            <div className={cls.Table_items}>{listItems}</div>
         </div>
     );
 };
