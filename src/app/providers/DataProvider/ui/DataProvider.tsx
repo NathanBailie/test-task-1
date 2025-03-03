@@ -2,12 +2,16 @@ import { normalizeTests } from '../model/lib/normalizeTests';
 import { fetchSites } from '../model/services/FetchSites';
 import { fetchTests } from '../model/services/FetchTests';
 import {
+    sortOrderChanger,
+    statusSortOrderChanger,
+} from '../model/lib/sortHandlers';
+import { statusASC, statusDESC } from '../model/lib/statusOrders';
+import {
     createContext,
     useContext,
     ReactNode,
     useState,
     useEffect,
-    useCallback,
 } from 'react';
 import {
     NormalizedSites,
@@ -65,75 +69,40 @@ export const DataProvider = ({ children }: DataProviderProps) => {
     const [statusSortOrder, setStatusSortOrder] = useState<SortOrder>('ASC');
     const [siteSortOrder, setSiteSortOrder] = useState<SortOrder>('ASC');
 
-    // Memoize sort handlers to avoid re-creation on each render
-    const nameSortOrderHandler = useCallback(() => {
-        setNameSortOrder(prevOrder => (prevOrder === 'ASC' ? 'DESC' : 'ASC'));
-
-        setFilteredTests(prev =>
-            prev
-                ? [...prev].sort((a, b) =>
-                      nameSortOrder === 'ASC'
-                          ? a.name.localeCompare(b.name)
-                          : b.name.localeCompare(a.name),
-                  )
-                : prev,
-        );
-    }, [nameSortOrder]);
-
-    const typeSortOrderHandler = useCallback(() => {
-        setTypeSortOrder(prevOrder => (prevOrder === 'ASC' ? 'DESC' : 'ASC'));
-
-        setFilteredTests(prev =>
-            prev
-                ? [...prev].sort((a, b) =>
-                      typeSortOrder === 'ASC'
-                          ? a.type.localeCompare(b.type)
-                          : b.type.localeCompare(a.type),
-                  )
-                : prev,
-        );
-    }, [typeSortOrder]);
-
-    const statusSortOrderHandler = useCallback(() => {
-        setStatusSortOrder(prevOrder => (prevOrder === 'ASC' ? 'DESC' : 'ASC'));
-
-        setFilteredTests(prev =>
-            prev
-                ? [...prev].sort((a, b) => {
-                      const ASC = {
-                          Online: 0,
-                          Paused: 1,
-                          Stopped: 2,
-                          Draft: 3,
-                      };
-                      const DESC = {
-                          Draft: 0,
-                          Stopped: 1,
-                          Paused: 2,
-                          Online: 3,
-                      };
-
-                      return statusSortOrder === 'ASC'
-                          ? ASC[a.status] - ASC[b.status]
-                          : DESC[a.status] - DESC[b.status];
-                  })
-                : prev,
-        );
-    }, [statusSortOrder]);
-
-    const siteSortOrderHandler = useCallback(() => {
-        setSiteSortOrder(prevOrder => (prevOrder === 'ASC' ? 'DESC' : 'ASC'));
-
-        setFilteredTests(prev =>
-            prev
-                ? [...prev].sort((a, b) =>
-                      siteSortOrder === 'ASC'
-                          ? a.site.localeCompare(b.site)
-                          : b.site.localeCompare(a.site),
-                  )
-                : prev,
-        );
-    }, [siteSortOrder]);
+    const nameSortOrderHandler = () => {
+        sortOrderChanger({
+            sortOrderChanger: setNameSortOrder,
+            setData: setFilteredTests,
+            sortOrder: nameSortOrder,
+            field: 'name',
+        });
+    };
+    const typeSortOrderHandler = () => {
+        sortOrderChanger({
+            sortOrderChanger: setTypeSortOrder,
+            setData: setFilteredTests,
+            sortOrder: typeSortOrder,
+            field: 'type',
+        });
+    };
+    const siteSortOrderHandler = () => {
+        sortOrderChanger({
+            sortOrderChanger: setSiteSortOrder,
+            setData: setFilteredTests,
+            sortOrder: siteSortOrder,
+            field: 'site',
+        });
+    };
+    const statusSortOrderHandler = () => {
+        statusSortOrderChanger({
+            sortOrderChanger: setStatusSortOrder,
+            setData: setFilteredTests,
+            sortOrder: statusSortOrder,
+            field: 'status',
+            statusASC,
+            statusDESC,
+        });
+    };
 
     useEffect(() => {
         setLoading(true);

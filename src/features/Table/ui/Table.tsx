@@ -16,9 +16,6 @@ function createColumn(
 export const Table = () => {
     const {
         filteredTests,
-        sites,
-        loading,
-        error,
         setSearchQuery,
         nameSortOrder,
         typeSortOrder,
