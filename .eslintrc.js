@@ -29,6 +29,12 @@ module.exports = {
         'react/require-default-props': 'off',
         'react-hooks/rules-of-hooks': 'error',
         'react-hooks/exhaustive-deps': 'error',
+        'react/jsx-filename-extension': [
+            2,
+            {
+                extensions: ['.js', '.jsx', '.tsx'],
+            },
+        ],
 
         // imports
         'import/no-unresolved': 'off',
@@ -37,7 +43,6 @@ module.exports = {
         'import/no-extraneous-dependencies': 'off',
 
         // code style
-        indent: ['error', 'tab'],
         'no-unused-vars': 'off',
         'no-shadow': 'off',
         'no-param-reassign': 'off',
@@ -50,6 +55,26 @@ module.exports = {
         'unused-imports/no-unused-imports': 'error',
         eqeqeq: 'off',
         'prefer-const': ['warn', { ignoreReadBeforeAssign: true }],
+        'import/order': [
+            'error',
+            {
+                pathGroups: [
+                    {
+                        pattern: '~/**',
+                        group: 'internal',
+                        position: 'before',
+                    },
+                ],
+                groups: [
+                    'builtin',
+                    'external',
+                    'internal',
+                    'parent',
+                    'sibling',
+                    'index',
+                ],
+            },
+        ],
     },
     globals: {
         __IS_DEV__: true,
