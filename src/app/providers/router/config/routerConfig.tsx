@@ -7,9 +7,11 @@ import {
     getRouteFinalize,
     getRouteFinalizeDetails,
     getRouteMain,
+    getRouteNotFound,
     getRouteResults,
     getRouteResultsDetails,
 } from '@/shared/const/router';
+import { NotFoundPage } from '@/pages/NotFoundPage';
 
 export const routeConfig: Record<AppRoutes, RouteProps> = {
     [AppRoutes.MAIN]: {
@@ -31,5 +33,9 @@ export const routeConfig: Record<AppRoutes, RouteProps> = {
     [AppRoutes.FINALIZE_DETAILS]: {
         path: getRouteFinalizeDetails(':id'),
         element: <FinalizePage />,
+    },
+    [AppRoutes.NOT_FOUND]: {
+        path: getRouteNotFound(),
+        element: <NotFoundPage />,
     },
 };
