@@ -19,6 +19,7 @@ Test task for the Frontend Developer position.
 5. **TableItem** — implemented an `entity` component responsible for rendering a table item.
 6. **SearchForm** — implemented a search feature that filters list items based on the entered input. The search is optimized using a custom `useDebounce` hook.
 7. **Data Normalization** — implemented data normalization to simplify processing and offload the `Table` component.
+8. **Responsive Design** — implemented responsiveness to ensure proper layout and user experience across different screen sizes, using CSS Grid and Flexbox along with media queries to adapt the app components
 
 ---
 
