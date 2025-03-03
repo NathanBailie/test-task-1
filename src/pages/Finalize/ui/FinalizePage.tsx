@@ -1,5 +1,10 @@
+import cls from './FinalizePage.module.scss';
 import { FinalizeViewer } from '@/features/FinalizeViewer';
 
-const Finalize = () => <FinalizeViewer />;
+const FinalizePage = () => (
+    <div className={cls.finalizePage}>
+        <FinalizeViewer />
+    </div>
+);
 
-export default Finalize;
+export default FinalizePage;

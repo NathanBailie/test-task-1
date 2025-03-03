@@ -90,7 +90,6 @@ export const Table = () => {
 
     return (
         <div className={cls.table}>
-            <h2>Dashboard</h2>
             <div className={cls.table_header}>{tableHeader}</div>
             <div className={cls.Table_items}>{listItems}</div>
         </div>
