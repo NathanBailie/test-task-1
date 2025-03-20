@@ -1,15 +1,6 @@
-import { normalizeTests } from '../model/lib/normalizeTests';
-import { fetchSites } from '../model/services/FetchSites';
-import { fetchTests } from '../model/services/FetchTests';
-
 import { useSortHandlers } from '../model/hooks/useSortHandlers';
-import {
-    createContext,
-    useContext,
-    ReactNode,
-    useState,
-    useEffect,
-} from 'react';
+import { useFetchData } from '../model/hooks/useFetchData';
+import { createContext, useContext, ReactNode, useState, useMemo } from 'react';
 import {
     NormalizedSites,
     NormalizedTest,
@@ -51,14 +42,20 @@ type DataProviderProps = {
 };
 
 export const DataProvider = ({ children }: DataProviderProps) => {
-    const [tests, setTests] = useState<NormalizedTest[] | undefined>(undefined);
-    const [sites, setSites] = useState<NormalizedSites | undefined>(undefined);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
-    const [filteredTests, setFilteredTests] = useState<
-        NormalizedTest[] | undefined
-    >(undefined);
+    const { sites, tests, setTests, loading, error } = useFetchData();
     const [searchQuery, setSearchQuery] = useState('');
+
+    const filteredTests = useMemo(
+        () =>
+            tests
+                ? tests.filter(test =>
+                      test.name
+                          .toLowerCase()
+                          .includes(searchQuery.toLowerCase()),
+                  )
+                : [],
+        [searchQuery, tests],
+    );
 
     const {
         nameSortOrder,
@@ -69,31 +66,7 @@ export const DataProvider = ({ children }: DataProviderProps) => {
         typeSortOrderHandler,
         siteSortOrderHandler,
         statusSortOrderHandler,
-    } = useSortHandlers(setFilteredTests);
-
-    useEffect(() => {
-        setLoading(true);
-
-        Promise.all([fetchSites(), fetchTests()])
-            .then(([sitesData, testsData]) => {
-                setSites(sitesData);
-                const normalizedTests = normalizeTests(testsData, sitesData);
-                setTests(normalizedTests);
-                setFilteredTests(normalizedTests);
-            })
-            .catch(() => setError(true))
-            .finally(() => setLoading(false));
-    }, []);
-
-    useEffect(() => {
-        if (tests) {
-            setFilteredTests(
-                tests.filter(test =>
-                    test.name.toLowerCase().includes(searchQuery.toLowerCase()),
-                ),
-            );
-        }
-    }, [searchQuery, tests]);
+    } = useSortHandlers(setTests);
 
     const value = {
         filteredTests,
