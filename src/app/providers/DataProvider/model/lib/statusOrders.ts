@@ -1,9 +1,4 @@
-export interface StatusOrder {
-    Online: number;
-    Paused: number;
-    Stopped: number;
-    Draft: number;
-}
+import { StatusOrder } from '../types/types';
 
 export const statusASC: StatusOrder = {
     Online: 0,

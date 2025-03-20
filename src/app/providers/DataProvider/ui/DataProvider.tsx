@@ -1,11 +1,8 @@
 import { normalizeTests } from '../model/lib/normalizeTests';
 import { fetchSites } from '../model/services/FetchSites';
 import { fetchTests } from '../model/services/FetchTests';
-import {
-    sortOrderChanger,
-    statusSortOrderChanger,
-} from '../model/lib/sortHandlers';
-import { statusASC, statusDESC } from '../model/lib/statusOrders';
+
+import { useSortHandlers } from '../model/hooks/useSortHandlers';
 import {
     createContext,
     useContext,
@@ -58,51 +55,21 @@ export const DataProvider = ({ children }: DataProviderProps) => {
     const [sites, setSites] = useState<NormalizedSites | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
-
     const [filteredTests, setFilteredTests] = useState<
         NormalizedTest[] | undefined
     >(undefined);
     const [searchQuery, setSearchQuery] = useState('');
 
-    const [nameSortOrder, setNameSortOrder] = useState<SortOrder>('ASC');
-    const [typeSortOrder, setTypeSortOrder] = useState<SortOrder>('ASC');
-    const [statusSortOrder, setStatusSortOrder] = useState<SortOrder>('ASC');
-    const [siteSortOrder, setSiteSortOrder] = useState<SortOrder>('ASC');
-
-    const nameSortOrderHandler = () => {
-        sortOrderChanger({
-            sortOrderChanger: setNameSortOrder,
-            setData: setFilteredTests,
-            sortOrder: nameSortOrder,
-            field: 'name',
-        });
-    };
-    const typeSortOrderHandler = () => {
-        sortOrderChanger({
-            sortOrderChanger: setTypeSortOrder,
-            setData: setFilteredTests,
-            sortOrder: typeSortOrder,
-            field: 'type',
-        });
-    };
-    const siteSortOrderHandler = () => {
-        sortOrderChanger({
-            sortOrderChanger: setSiteSortOrder,
-            setData: setFilteredTests,
-            sortOrder: siteSortOrder,
-            field: 'site',
-        });
-    };
-    const statusSortOrderHandler = () => {
-        statusSortOrderChanger({
-            sortOrderChanger: setStatusSortOrder,
-            setData: setFilteredTests,
-            sortOrder: statusSortOrder,
-            field: 'status',
-            statusASC,
-            statusDESC,
-        });
-    };
+    const {
+        nameSortOrder,
+        typeSortOrder,
+        siteSortOrder,
+        statusSortOrder,
+        nameSortOrderHandler,
+        typeSortOrderHandler,
+        siteSortOrderHandler,
+        statusSortOrderHandler,
+    } = useSortHandlers(setFilteredTests);
 
     useEffect(() => {
         setLoading(true);
@@ -141,8 +108,8 @@ export const DataProvider = ({ children }: DataProviderProps) => {
         statusSortOrder,
         nameSortOrderHandler,
         typeSortOrderHandler,
-        statusSortOrderHandler,
         siteSortOrderHandler,
+        statusSortOrderHandler,
     };
 
     return (
