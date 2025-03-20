@@ -1,49 +1,12 @@
 import cls from './Table.module.scss';
-import arrowDown from '@/shared/assets/icons/arrow-down.svg';
-import arrowUp from '@/shared/assets/icons/arrow-up.svg';
 import { useData } from '@/app/providers/DataProvider';
 import { TableItem } from '@/entities/TableItem';
 import { Loader } from '@/shared/ui/Loader/ui/Loader';
 import { Error } from '@/shared/ui/Error/ui/Error';
-
-function createColumn(
-    name: string,
-    content: string,
-    sortOrder: 'ASC' | 'DESC',
-    orderHandler: () => void,
-) {
-    return { name, content, sortOrder, orderHandler };
-}
+import { TableHeader } from '@/entities/TableHead';
 
 export const Table = () => {
-    const {
-        loading,
-        error,
-        filteredTests,
-        setSearchQuery,
-        nameSortOrder,
-        typeSortOrder,
-        statusSortOrder,
-        siteSortOrder,
-        nameSortOrderHandler,
-        typeSortOrderHandler,
-        statusSortOrderHandler,
-        siteSortOrderHandler,
-    } = useData();
-    if (!filteredTests) return <h2>No data...</h2>;
-
-    const tableHead = [
-        createColumn('name', 'Name', nameSortOrder, nameSortOrderHandler),
-        createColumn('type', 'Type', typeSortOrder, typeSortOrderHandler),
-        createColumn(
-            'status',
-            'Status',
-            statusSortOrder,
-            statusSortOrderHandler,
-        ),
-        createColumn('site', 'Site', siteSortOrder, siteSortOrderHandler),
-        createColumn('action', '', 'ASC', () => {}),
-    ];
+    const { loading, error, filteredTests, setSearchQuery } = useData();
 
     if (loading) return <Loader />;
     if (error) return <Error />;
@@ -75,28 +38,9 @@ export const Table = () => {
         );
     });
 
-    const tableHeader = tableHead.map(
-        ({ name, content, sortOrder, orderHandler }, index) => (
-            <button
-                type="button"
-                key={index}
-                className={cls[name]}
-                onClick={orderHandler}
-            >
-                {content}
-                {name !== 'action' && (
-                    <img
-                        src={sortOrder === 'ASC' ? arrowUp : arrowDown}
-                        alt={`${sortOrder.toLowerCase()}-sort`}
-                    />
-                )}
-            </button>
-        ),
-    );
-
     return (
         <div className={cls.table}>
-            <div className={cls.table_header}>{tableHeader}</div>
+            <TableHeader />
             <div className={cls.table_items}>{listItems}</div>
         </div>
     );
