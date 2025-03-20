@@ -1,15 +1,14 @@
 import { fetchSites } from '../services/FetchSites';
 import { fetchTests } from '../services/FetchTests';
 import { normalizeTests } from '../lib/normalizeTests';
+import { SetState } from '../types/types';
 import { useState, useEffect } from 'react';
 import { NormalizedSites, NormalizedTest } from '@/shared/types/types';
 
 export const useFetchData = (): {
     sites: NormalizedSites | undefined;
     tests: NormalizedTest[] | undefined;
-    setTests: React.Dispatch<
-        React.SetStateAction<NormalizedTest[] | undefined>
-    >;
+    setTests: SetState<NormalizedTest[] | undefined>;
     loading: boolean;
     error: boolean;
 } => {

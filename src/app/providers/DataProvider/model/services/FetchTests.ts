@@ -1,5 +1,5 @@
-import { Test } from '@/features/Table/model/types/types';
 import { BASE_URL } from '@/shared/const/api';
+import { Test } from '@/shared/types/types';
 
 export const fetchTests = async (): Promise<Test[]> => {
     try {

@@ -1,9 +1,9 @@
-import { StatusOrder } from '../types/types';
+import { SetState, StatusOrder } from '../types/types';
 import { NormalizedTest, SortOrder } from '@/shared/types/types';
 
 interface sortOrderChangerProps {
-    sortOrderChanger: React.Dispatch<React.SetStateAction<SortOrder>>;
-    setData: React.Dispatch<React.SetStateAction<NormalizedTest[] | undefined>>;
+    sortOrderChanger: SetState<SortOrder>;
+    setData: SetState<NormalizedTest[] | undefined>;
     sortOrder: SortOrder;
     field: 'name' | 'type' | 'site' | 'status';
     statusASC?: StatusOrder;

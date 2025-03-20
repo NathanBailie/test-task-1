@@ -1,12 +1,11 @@
 import { statusASC, statusDESC } from '../lib/statusOrders';
 import { sortOrderChanger } from '../lib/sortHandlers';
+import { SetState } from '../types/types';
 import { useState, useCallback } from 'react';
 import { SortOrder, NormalizedTest } from '@/shared/types/types';
 
 export const useSortHandlers = (
-    setFilteredTests: React.Dispatch<
-        React.SetStateAction<NormalizedTest[] | undefined>
-    >,
+    setFilteredTests: SetState<NormalizedTest[] | undefined>,
 ) => {
     const [nameSortOrder, setNameSortOrder] = useState<SortOrder>('ASC');
     const [typeSortOrder, setTypeSortOrder] = useState<SortOrder>('ASC');

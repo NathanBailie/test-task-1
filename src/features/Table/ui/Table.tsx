@@ -3,6 +3,8 @@ import arrowDown from '@/shared/assets/icons/arrow-down.svg';
 import arrowUp from '@/shared/assets/icons/arrow-up.svg';
 import { useData } from '@/app/providers/DataProvider';
 import { TableItem } from '@/entities/TableItem';
+import { Loader } from '@/shared/ui/Loader/ui/Loader';
+import { Error } from '@/shared/ui/Error/ui/Error';
 
 function createColumn(
     name: string,
@@ -15,6 +17,8 @@ function createColumn(
 
 export const Table = () => {
     const {
+        loading,
+        error,
         filteredTests,
         setSearchQuery,
         nameSortOrder,
@@ -41,6 +45,8 @@ export const Table = () => {
         createColumn('action', '', 'ASC', () => {}),
     ];
 
+    if (loading) return <Loader />;
+    if (error) return <Error />;
     if (!filteredTests?.length) {
         return (
             <div className={cls.wrongResult}>

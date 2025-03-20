@@ -4,3 +4,5 @@ export interface StatusOrder {
     Stopped: number;
     Draft: number;
 }
+
+export type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
