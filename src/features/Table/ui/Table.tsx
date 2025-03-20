@@ -4,22 +4,14 @@ import { TableItem } from '@/entities/TableItem';
 import { Loader } from '@/shared/ui/Loader/ui/Loader';
 import { Error } from '@/shared/ui/Error/ui/Error';
 import { TableHeader } from '@/entities/TableHead';
+import { NoResults } from '@/shared/ui/NoResults/NoResults';
 
 export const Table = () => {
     const { loading, error, filteredTests, setSearchQuery } = useData();
 
     if (loading) return <Loader />;
     if (error) return <Error />;
-    if (!filteredTests?.length) {
-        return (
-            <div className={cls.wrongResult}>
-                <h2>Your search did not match any results.</h2>
-                <button type="button" onClick={() => setSearchQuery('')}>
-                    Reset
-                </button>
-            </div>
-        );
-    }
+    if (!filteredTests?.length) return <NoResults onReset={setSearchQuery} />;
 
     const listItems = filteredTests.map(item => {
         const { id, name, type, status, site, linkText, subdomain } = item;
