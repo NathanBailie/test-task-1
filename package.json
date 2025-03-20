@@ -4,8 +4,8 @@
     "main": "index.js",
     "scripts": {
         "start:json": "json-server -c ./json-server/config.json -w ./json-server/db.json",
+        "start": "vite",
         "start:webpack": "webpack serve --env port=3000",
-        "start:vite": "vite",
         "build:dev": "webpack  --env mode=development",
         "build:prod": "webpack --env mode=production",
         "lint:ts": "eslint \"./src/**/*.{ts,tsx}\"",

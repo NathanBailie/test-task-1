@@ -41,7 +41,7 @@ Test task for the Frontend Developer position.
 ```
 npm install - install dependencies
 npm run start:json - start json server
-npm run start:vite - launch the project using Vite
+npm run start - launch the project using Vite
 npm run start:webpack - launch the project on the Webpack dev server
 ```
 
@@ -50,8 +50,8 @@ npm run start:webpack - launch the project on the Webpack dev server
 ## Scripts
 
 - `npm run start:json` - Start the JSON server using the configuration from `json-server/config.json` and watch `json-server/db.json`
+- `npm run start` - Launch the frontend project using Vite
 - `npm run start:webpack` - Launch the frontend project on the Webpack dev server on port 3000
-- `npm run start:vite` - Launch the frontend project using Vite
 - `npm run build:dev` - Build the project in development mode using Webpack
 - `npm run build:prod` - Build the project in production mode using Webpack
 - `npm run lint:ts` - Run ESLint to check TypeScript and TSX files for linting issues
@@ -96,6 +96,7 @@ For development, the project contains 2 configs:
 
 ## Entities
 
+- [TableHead](/src/entities/TableHead)
 - [TableItem](/src/entities/TableItem)
 
 ## Features
@@ -104,6 +105,12 @@ For development, the project contains 2 configs:
 - [Table](/src/features/Table)
 - [ResultsViewer](/src/features/ResultsViewer)
 - [FinalizeViewer](/src/features/FinalizeViewer)
+
+## Shared UI
+
+- [Error](/src/shared/ui/Error)
+- [Loader](/src/shared/ui/Loader)
+- [NoResults](/src/shared/ui/NoResults)
 
 ---
 
